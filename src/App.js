@@ -1,18 +1,17 @@
 import { useState } from "react";
 import "./App.css";
 
-const Modal = (props) => {
+const Modal = ({ title, setTitle, modalTitle }) => {
   return (
     <div className="modal">
-      <h4>{props.title[0]}</h4>
+      <h4>{title[modalTitle]}</h4>
       <p>Date</p>
       <p>Text</p>
       <button
         onClick={() => {
-          const copyTitle = [...props.title];
-          copyTitle[0] = "여자코트추천";
-          props.setTitle(copyTitle);
-          // props.setTitle((copyTitle[0] = "여자코트추천"));
+          const copyTitle = [...title];
+          copyTitle[modalTitle] = "변경된 제목";
+          setTitle(copyTitle);
         }}
       >
         Edit
@@ -22,9 +21,11 @@ const Modal = (props) => {
 };
 
 function App() {
-  const [title, setTitle] = useState(["다", "가", "나"]);
+  const [title, setTitle] = useState(["남자", "여자", "고양이"]);
 
   const [modal, setModal] = useState(false);
+
+  const [modalTitle, setModalTitle] = useState(0);
 
   return (
     <div className="App">
@@ -34,8 +35,13 @@ function App() {
 
       {title.map((it, i) => {
         return (
-          <div className="list" key={i}>
-            <h4 onClick={() => setModal(!modal)}>
+          <div className={`list`} key={i}>
+            <h4
+              onClick={() => {
+                setModal(!modal);
+                setModalTitle(i);
+              }}
+            >
               {it}, {i + 1}번째 글
             </h4>
             <p>6월 23일 발행</p>
@@ -43,7 +49,9 @@ function App() {
         );
       })}
 
-      {modal === true ? <Modal title={title} setTitle={setTitle} /> : null}
+      {modal === true ? (
+        <Modal title={title} setTitle={setTitle} modalTitle={modalTitle} />
+      ) : null}
     </div>
   );
 }
