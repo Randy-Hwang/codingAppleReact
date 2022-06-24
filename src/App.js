@@ -7,7 +7,16 @@ const Modal = (props) => {
       <h4>{props.title[0]}</h4>
       <p>Date</p>
       <p>Text</p>
-      <button onClick={() => props.setTitle("여자 코트 추천")}>Edit</button>
+      <button
+        onClick={() => {
+          const copyTitle = [...props.title];
+          copyTitle[0] = "여자코트추천";
+          props.setTitle(copyTitle);
+          // props.setTitle((copyTitle[0] = "여자코트추천"));
+        }}
+      >
+        Edit
+      </button>
     </div>
   );
 };
@@ -34,7 +43,7 @@ function App() {
         );
       })}
 
-      {modal === true ? <Modal title={title} /> : null}
+      {modal === true ? <Modal title={title} setTitle={setTitle} /> : null}
     </div>
   );
 }
