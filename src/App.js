@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 
 const Modal = ({ title, setTitle, modalTitle }) => {
@@ -20,11 +20,27 @@ const Modal = ({ title, setTitle, modalTitle }) => {
   );
 };
 
+const Date = () => {
+  const today = new window.Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  return (
+    <p>
+      {year}년, {month}월, {day}일
+    </p>
+  );
+};
+
 function App() {
   const [title, setTitle] = useState(["남자", "여자", "고양이"]);
   const [modal, setModal] = useState(false);
   const [modalTitle, setModalTitle] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const [likeNum, setLikeNum] = useState([0, 0, 0]);
+
+  const contentRef = useRef();
 
   return (
     <div className="App">
@@ -35,6 +51,8 @@ function App() {
       {title.map((item, i) => {
         return (
           <div className={`list`} key={i}>
+            {/* Title, Content */}
+
             <h4
               onClick={() => {
                 setModal(!modal);
@@ -43,12 +61,24 @@ function App() {
             >
               {item}, {i + 1}번째 글
             </h4>
-            <p>6월 23일 발행</p>
+
+            {/* Like, Date */}
+            <span
+              onClick={() => {
+                const copyLike = [...likeNum];
+                copyLike[i] += 1;
+                setLikeNum(copyLike);
+              }}
+            >
+              👍🏻 {likeNum[i]}
+            </span>
+            <Date />
+
+            {/* Delete Button */}
             <button
               onClick={() => {
                 const copyList = [...title];
                 copyList.splice(i, 1);
-                console.log(i);
                 setTitle(copyList);
               }}
             >
@@ -63,16 +93,25 @@ function App() {
       ) : null}
 
       <input
+        ref={contentRef}
         onChange={(e) => {
           setInputValue(e.target.value);
         }}
       />
       <button
         onClick={() => {
-          // const copyTitle = title;
-          const copyTitle = [...title];
-          copyTitle.unshift(inputValue);
-          setTitle(copyTitle);
+          if (inputValue.length < 1) {
+            contentRef.current.focus();
+            return;
+          } else {
+            const copyLike = [...likeNum];
+            copyLike.unshift(0);
+            setLikeNum(copyLike);
+
+            const copyTitle = [...title];
+            copyTitle.unshift(inputValue);
+            setTitle(copyTitle);
+          }
         }}
       >
         Submit
