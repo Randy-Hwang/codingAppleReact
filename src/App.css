@@ -1,3 +1,36 @@
+.main_bg {
+  height: 200px;
+
+  /* 배경 이미지를 가져오고, 사이즈를 웹페이지 화면에 맞게 조절하고, 위치를 중간으로 옮기는 코드 */
+  background-image: url(./img/bg.png);
+  background-size: cover;
+  background-position: center;
+}
+
+.goods_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.goods_0 {
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.goods_1 {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.goods_2 {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .App {
   text-align: center;
 }
