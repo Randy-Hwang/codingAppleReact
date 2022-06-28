@@ -4,7 +4,7 @@ import data from "../data";
 import { useState } from "react";
 
 const CardTitle = ({ order }) => {
-  let [shoes, setShoes] = useState(data);
+  let [shoes] = useState(data);
 
   let imgSrc;
 
