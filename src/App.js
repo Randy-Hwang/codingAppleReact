@@ -2,13 +2,15 @@ import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 import CardTitle from "./components/CardTitle";
 import Detail from "./pages/Detail";
 import data from "./data";
 
 function App() {
-  const [shoes] = useState(data);
+  const [buttonCount, setButtonCount] = useState(0);
+  const [shoes, setShoes] = useState(data);
   const navigate = useNavigate();
 
   return (
@@ -25,8 +27,33 @@ function App() {
         </Container>
       </Navbar>
 
+      <button
+        onClick={() => {
+          setButtonCount(buttonCount + 1);
+          if (buttonCount === 0) {
+            axios
+              .get("https://codingapple1.github.io/shop/data2.json")
+              .then((result) => {
+                const copyData = [...data, ...result.data];
+                setShoes(copyData);
+              });
+          } else if (buttonCount === 1) {
+            axios
+              .get("https://codingapple1.github.io/shop/data3.json")
+              .then((result) => {
+                const secondCopy = [...shoes, ...result.data];
+                setShoes(secondCopy);
+              });
+          } else {
+            return <div>상품이 더 없습니다.</div>;
+          }
+        }}
+      >
+        button
+      </button>
+
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home shoes={shoes} />} />
         <Route path="/detail/:urlId" element={<Detail shoes={shoes} />} />
 
         <Route path="/about" element={<About />}>
@@ -43,20 +70,18 @@ function App() {
   );
 }
 
-const Home = () => {
+const Home = ({ shoes }) => {
   return (
     <div>
       <div className="main_bg" />
       <div className="goods_wrapper">
-        <div className="goods_0">
-          <CardTitle order={0} />
-        </div>
-        <div className="goods_1">
-          <CardTitle order={1} />
-        </div>
-        <div className="goods_2">
-          <CardTitle order={2} />
-        </div>
+        {shoes.map((i) => {
+          return (
+            <div className={`goods_${i.id}`} key={i.id}>
+              <CardTitle order={i.id} shoes={shoes} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

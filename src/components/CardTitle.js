@@ -1,11 +1,7 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import data from "../data";
-import { useState } from "react";
 
-const CardTitle = ({ order }) => {
-  let [shoes] = useState(data);
-
+const CardTitle = ({ order, shoes }) => {
   let imgSrc;
 
   if (order === 0) {
@@ -14,6 +10,8 @@ const CardTitle = ({ order }) => {
     imgSrc = "https://codingapple1.github.io/shop/shoes2.jpg";
   } else if (order === 2) {
     imgSrc = "https://codingapple1.github.io/shop/shoes3.jpg";
+  } else {
+    imgSrc = { undefined };
   }
 
   return (
