@@ -7,28 +7,31 @@
   background-position: center;
 }
 
+.start {
+  transform: scale(0);
+}
+
+.end {
+  transform: scale(1);
+  transition: all 0.5s;
+}
+
 .goods_wrapper {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.goods_0 {
+.goods {
   margin-left: 10px;
   margin-top: 20px;
   margin-right: 10px;
 }
 
-.goods_1 {
-  margin-top: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.goods_2 {
-  margin-top: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
+.detail_nav {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid gray;
 }
 
 .App {

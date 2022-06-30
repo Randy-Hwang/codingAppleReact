@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DetailNav from "../components/DetailNav";
 
 const Detail = ({ shoes }) => {
   let { urlId } = useParams();
@@ -39,6 +40,9 @@ const Detail = ({ shoes }) => {
           <p>{shoes[itemId.id].price}원</p>
           <button className="btn btn-danger">주문하기</button>
         </div>
+      </div>
+      <div className="detail_nav">
+        <DetailNav />
       </div>
     </div>
   );

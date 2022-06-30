@@ -10,8 +10,6 @@ const CardTitle = ({ order, shoes }) => {
     imgSrc = "https://codingapple1.github.io/shop/shoes2.jpg";
   } else if (order === 2) {
     imgSrc = "https://codingapple1.github.io/shop/shoes3.jpg";
-  } else {
-    imgSrc = { undefined };
   }
 
   return (

@@ -9,7 +9,6 @@ import Detail from "./pages/Detail";
 import data from "./data";
 
 function App() {
-  const [buttonCount, setButtonCount] = useState(0);
   const [shoes, setShoes] = useState(data);
   const navigate = useNavigate();
 
@@ -27,6 +26,29 @@ function App() {
         </Container>
       </Navbar>
 
+      <Routes>
+        <Route path="/" element={<Home shoes={shoes} setShoes={setShoes} />} />
+        <Route path="/detail/:urlId" element={<Detail shoes={shoes} />} />
+
+        <Route path="/about" element={<About />}>
+          <Route path="member" element={<div>This is Member</div>} />
+          <Route path="location" element={<div>This is Location</div>} />
+        </Route>
+
+        <Route path="/event" element={<Event />}>
+          <Route path="one" element={<div>첫 주문 시 양배추즙 서비스</div>} />
+          <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
+        </Route>
+      </Routes>
+    </div>
+  );
+}
+
+const Home = ({ shoes, setShoes }) => {
+  const [buttonCount, setButtonCount] = useState(0);
+
+  return (
+    <div>
       <button
         onClick={() => {
           setButtonCount(buttonCount + 1);
@@ -52,32 +74,11 @@ function App() {
         button
       </button>
 
-      <Routes>
-        <Route path="/" element={<Home shoes={shoes} />} />
-        <Route path="/detail/:urlId" element={<Detail shoes={shoes} />} />
-
-        <Route path="/about" element={<About />}>
-          <Route path="member" element={<div>This is Member</div>} />
-          <Route path="location" element={<div>This is Location</div>} />
-        </Route>
-
-        <Route path="/event" element={<Event />}>
-          <Route path="one" element={<div>첫 주문 시 양배추즙 서비스</div>} />
-          <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
-        </Route>
-      </Routes>
-    </div>
-  );
-}
-
-const Home = ({ shoes }) => {
-  return (
-    <div>
       <div className="main_bg" />
       <div className="goods_wrapper">
         {shoes.map((i) => {
           return (
-            <div className={`goods_${i.id}`} key={i.id}>
+            <div className={`goods`} key={i.id}>
               <CardTitle order={i.id} shoes={shoes} />
             </div>
           );
