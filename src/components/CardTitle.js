@@ -1,8 +1,10 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 const CardTitle = ({ order, shoes }) => {
   let imgSrc;
+  const navigate = useNavigate();
 
   if (order === 0) {
     imgSrc = "https://codingapple1.github.io/shop/shoes1.jpg";
@@ -21,7 +23,12 @@ const CardTitle = ({ order, shoes }) => {
           {shoes[order].content}
           <br /> {shoes[order].price} ₩
         </Card.Text>
-        <Button variant="secondary">Buy It!!</Button>
+        <Button
+          variant="secondary"
+          onClick={() => navigate(`/detail/${shoes[order].id}`)}
+        >
+          Buy It!!
+        </Button>
       </Card.Body>
     </Card>
   );

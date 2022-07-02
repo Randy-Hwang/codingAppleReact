@@ -1,14 +1,21 @@
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import CardTitle from "./components/CardTitle";
 import Detail from "./pages/Detail";
 import data from "./data";
+import Cart from "./pages/Cart";
 
 function App() {
+  useEffect(() => {
+    const isExist = localStorage.getItem("watched");
+
+    return isExist ? null : localStorage.setItem("watched", JSON.stringify([]));
+  }, []);
+
   const [shoes, setShoes] = useState(data);
   const navigate = useNavigate();
 
@@ -22,6 +29,7 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/detail/0")}>Details</Nav.Link>
+            <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -29,16 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home shoes={shoes} setShoes={setShoes} />} />
         <Route path="/detail/:urlId" element={<Detail shoes={shoes} />} />
-
-        <Route path="/about" element={<About />}>
-          <Route path="member" element={<div>This is Member</div>} />
-          <Route path="location" element={<div>This is Location</div>} />
-        </Route>
-
-        <Route path="/event" element={<Event />}>
-          <Route path="one" element={<div>첫 주문 시 양배추즙 서비스</div>} />
-          <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
-        </Route>
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
@@ -67,11 +66,12 @@ const Home = ({ shoes, setShoes }) => {
                 setShoes(secondCopy);
               });
           } else {
-            return <div>상품이 더 없습니다.</div>;
+            alert("No more items");
           }
         }}
+        className="add_button"
       >
-        button
+        상품 더 보여주기
       </button>
 
       <div className="main_bg" />
@@ -84,26 +84,6 @@ const Home = ({ shoes, setShoes }) => {
           );
         })}
       </div>
-    </div>
-  );
-};
-
-const About = () => {
-  return (
-    <div>
-      <div>This is About</div>
-      <Outlet></Outlet>
-    </div>
-  );
-};
-
-const Event = () => {
-  return (
-    <div>
-      <div>
-        <h3>오늘의 이벤트</h3>
-      </div>
-      <Outlet></Outlet>
     </div>
   );
 };

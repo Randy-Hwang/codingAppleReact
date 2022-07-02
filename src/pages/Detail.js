@@ -1,14 +1,30 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import DetailNav from "../components/DetailNav";
+import { addItem } from "../store/cartSlice";
+import { Toast } from "react-bootstrap";
 
 const Detail = ({ shoes }) => {
-  let { urlId } = useParams();
-
-  const itemId = shoes.find((i) => parseInt(i.id) === parseInt(urlId));
+  const { urlId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [inputValue, setInputValue] = useState("");
   const [alert, setAlert] = useState(false);
+
+  const itemId = shoes.find((i) => parseInt(i.id) === parseInt(urlId));
+
+  useEffect(() => {
+    let watchedArr = JSON.parse(localStorage.getItem("watched"));
+    watchedArr.push(itemId.title);
+    console.log(watchedArr);
+    // new Set() => 중복을 허용하지 않는 set 전용 배열을 만들어줌
+    // Array.from() => Set으로 바꾼 배열을 다시 원래 배열로 만들어줌
+    watchedArr = Array.from(new Set(watchedArr));
+    console.log(watchedArr);
+    localStorage.setItem("watched", JSON.stringify(watchedArr));
+  }, []);
 
   useEffect(() => {
     if (isNaN(inputValue) === true) {
@@ -18,6 +34,18 @@ const Detail = ({ shoes }) => {
 
   return (
     <div className="container">
+      <Toast className="watched">
+        <Toast.Header>
+          <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+          <strong className="me-auto">최근 본 목록</strong>
+        </Toast.Header>
+        <Toast.Body>
+          {JSON.parse(localStorage.getItem("watched")).map((i) => (
+            <div>{i}</div>
+          ))}
+        </Toast.Body>
+      </Toast>
+
       <div className="row">
         <div className="col-md-6">
           <img
@@ -27,7 +55,7 @@ const Detail = ({ shoes }) => {
           />
         </div>
         <div className="col-md-6">
-          <h4 className="pt-5">{shoes[itemId.id].title}</h4>
+          <h4 className="pt-5">{itemId.title}</h4>
           {alert === true ? <div>숫자만 입력하세요</div> : null}
           <input
             placeholder="수량을 입력하세요"
@@ -36,9 +64,17 @@ const Detail = ({ shoes }) => {
             }}
           />
 
-          <p>{shoes[itemId.id].content}</p>
-          <p>{shoes[itemId.id].price}원</p>
-          <button className="btn btn-danger">주문하기</button>
+          <p>{itemId.content}</p>
+          <p>{itemId.price}원</p>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              dispatch(addItem(shoes[itemId.id].title));
+              navigate("/cart");
+            }}
+          >
+            주문하기
+          </button>
         </div>
       </div>
       <div className="detail_nav">
