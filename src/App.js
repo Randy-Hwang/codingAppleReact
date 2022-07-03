@@ -8,16 +8,25 @@ import CardTitle from "./components/CardTitle";
 import Detail from "./pages/Detail";
 import data from "./data";
 import Cart from "./pages/Cart";
+import { useQuery } from "react-query";
 
 function App() {
   useEffect(() => {
     const isExist = localStorage.getItem("watched");
 
-    return isExist ? null : localStorage.setItem("watched", JSON.stringify([]));
+    return isExist
+      ? undefined
+      : localStorage.setItem("watched", JSON.stringify([]));
   }, []);
 
   const [shoes, setShoes] = useState(data);
   const navigate = useNavigate();
+
+  const userName = useQuery("userName", () => {
+    return axios
+      .get("https://codingapple1.github.io/userdata.json")
+      .then((a) => a.data);
+  });
 
   return (
     <div className="App">
@@ -30,6 +39,9 @@ function App() {
             <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/detail/0")}>Details</Nav.Link>
             <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
+          </Nav>
+          <Nav className="ms_auto">
+            {userName.isLoading ? "Loading..." : `Hello ${userName.data.name}!`}
           </Nav>
         </Container>
       </Navbar>

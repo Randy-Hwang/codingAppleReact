@@ -18,13 +18,11 @@ const Detail = ({ shoes }) => {
   useEffect(() => {
     let watchedArr = JSON.parse(localStorage.getItem("watched"));
     watchedArr.push(itemId.title);
-    console.log(watchedArr);
     // new Set() => 중복을 허용하지 않는 set 전용 배열을 만들어줌
     // Array.from() => Set으로 바꾼 배열을 다시 원래 배열로 만들어줌
     watchedArr = Array.from(new Set(watchedArr));
-    console.log(watchedArr);
     localStorage.setItem("watched", JSON.stringify(watchedArr));
-  }, []);
+  }, [itemId.title]);
 
   useEffect(() => {
     if (isNaN(inputValue) === true) {
@@ -40,8 +38,8 @@ const Detail = ({ shoes }) => {
           <strong className="me-auto">최근 본 목록</strong>
         </Toast.Header>
         <Toast.Body>
-          {JSON.parse(localStorage.getItem("watched")).map((i) => (
-            <div>{i}</div>
+          {JSON.parse(localStorage.getItem("watched")).map((i, idx) => (
+            <div key={idx}>{i}</div>
           ))}
         </Toast.Body>
       </Toast>
